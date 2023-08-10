@@ -27,7 +27,7 @@ type values struct {
 //   go:generate gogetter StructName1 StructName2
 func main() {
 	customZeroValue := flag.String("custom", "", "Custom zero value map. Format: type1=zeroval1,type2=zeroval2")
-	dry := flag.Bool("dry", false, "Dry run. If true, it will print the output to stdout.")
+	dry := flag.Bool("dry", false, "Dry run. If true, it will print the output to stdout instead of write to file.")
 	flag.Parse()
 
 	sourceFile := os.Getenv("GOFILE")
