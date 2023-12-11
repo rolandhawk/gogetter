@@ -26,14 +26,14 @@ type values struct {
 // Expected usage in gogenerate:
 //   go:generate gogetter StructName1 StructName2
 func main() {
-	customZeroValue := flag.String("custom", "", "Custom zero value map. Format: type1=zeroval1,type2=zeroval2")
-	dry := flag.Bool("dry", false, "Dry run. If true, it will print the output to stdout instead of write to file.")
-	flag.Parse()
-
 	sourceFile := os.Getenv("GOFILE")
 	packageName := os.Getenv("GOPACKAGE")
 	structNames := flag.Args()
-	outputFile := getFileName(sourceFile)
+
+	customZeroValue := flag.String("custom", "", "Custom zero value map. Format: type1=zeroval1,type2=zeroval2")
+	outputFile := flag.String("out", getDefaultOutputFileName(sourceFile), "Custom output file name. Default: [source]_getter.go. Format: *.go")
+	dry := flag.Bool("dry", false, "Dry run. If true, it will print the output to stdout instead of write to file.")
+	flag.Parse()
 
 	fmt.Println("generate getter for struct", structNames)
 
@@ -74,7 +74,7 @@ func main() {
 	}
 
 	// Prettify output
-	res, err := imports.Process(outputFile, buff.Bytes(), nil)
+	res, err := imports.Process(*outputFile, buff.Bytes(), nil)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -84,7 +84,7 @@ func main() {
 		fmt.Println(string(res))
 	} else {
 		// Write into file
-		err = ioutil.WriteFile(outputFile, res, 0644)
+		err = ioutil.WriteFile(*outputFile, res, 0644)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -93,12 +93,9 @@ func main() {
 
 }
 
-func getFileName(source string) string {
-	filename := strings.Split(source, ".")
-	filename = filename[:len(filename)-1] // remove .go suffix
-	filename = append(filename, "getter", "go")
-
-	return strings.Join(filename, ".")
+func getDefaultOutputFileName(source string) string {
+	filename := strings.TrimRight(source, ".go")
+	return fmt.Sprintf("%s_getter.go", filename)
 }
 
 func extractMap(str string) map[string]string {
