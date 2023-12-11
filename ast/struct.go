@@ -7,9 +7,8 @@ type Struct struct {
 }
 
 type StructField struct {
-	Name      string // Name of the field
-	Type      string // Type of the field
-	ZeroValue string // Zero value for the type
+	Name string // Name of the field
+	Type string // Type of the field
 }
 
 type Import struct {

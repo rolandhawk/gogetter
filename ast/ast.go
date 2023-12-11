@@ -8,7 +8,6 @@ import (
 	"go/parser"
 	"go/token"
 	"reflect"
-	"strings"
 )
 
 type File struct {
@@ -133,32 +132,9 @@ func extractField(node *ast.Field) (*StructField, error) {
 	}
 
 	return &StructField{
-		Name:      name,
-		Type:      typeName,
-		ZeroValue: getZeroValue(typeName),
+		Name: name,
+		Type: typeName,
 	}, nil
-}
-
-func getZeroValue(tipe string) string {
-	// List in https://go.dev/tour/basics/11
-	switch tipe {
-	case "float32", "float64",
-		"int", "int8", "int16", "int32", "int64", "uint",
-		"uint8", "uint16", "uint32", "uint64", "uintptr",
-		"complex64", "complex128",
-		"byte", "rune":
-		return "0"
-	case "string":
-		return `""`
-	case "bool":
-		return "false"
-	default:
-		if strings.HasPrefix(tipe, "map") || strings.HasPrefix(tipe, "[") || strings.HasPrefix(tipe, "*") {
-			return "nil"
-		}
-
-		return fmt.Sprintf("%s{}", tipe)
-	}
 }
 
 func getTypeName(expr ast.Expr) (string, error) {

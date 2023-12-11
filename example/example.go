@@ -1,4 +1,4 @@
-//go:generate gogetter -custom=Alias=DefaultAlias,Underlying=0 BasicType Complex
+//go:generate gogetter BasicType Complex
 
 package example
 
@@ -7,8 +7,6 @@ import (
 
 	"golang.org/x/tools/imports"
 )
-
-const DefaultAlias int32 = 2
 
 type Alias = int32
 type Underlying int32
