@@ -8,13 +8,13 @@ go install github.com/rolandhawk/gogetter@v0.0.1
 
 ## Usage
 ```
-//go:generate gogetter -custom Type1=CustomZeroValue,Type2=Custom2 StructName1 StructName2
+//go:generate gogetter StructName1 StructName2
 ```
 
 Flags:
 | Name | Default | Description |
 |------|---------|-------------|
-| custom | "" | Custom zero value map. Format: type1=zeroval1,type2=zeroval2 |
+| out | `{source}_getter.go` | Custom output file name. Format: `*.go`. Default: `{source}_getter.go` |
 | dry | false | Dry run. If true, it will print the output to stdout instead of write to file. |
 
 See [example](https://github.com/rolandhawk/gogetter/blob/master/example/example.go#L1) for actual use.

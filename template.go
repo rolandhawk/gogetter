@@ -16,12 +16,12 @@ import (
 {{$type := .Name}}
 // Getter for {{.Name}}
 {{range .Fields}}
-func (x *{{$type}}) Get{{.Name}}() {{.Type}} {
+func (x *{{$type}}) Get{{.Name}}() (o {{.Type}}) {
 	if x != nil {
 		return x.{{.Name}}
 	}
 
-	return {{.ZeroValue}}
+	return o
 }
 {{end}}
 

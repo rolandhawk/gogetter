@@ -28,13 +28,11 @@ type values struct {
 func main() {
 	sourceFile := os.Getenv("GOFILE")
 	packageName := os.Getenv("GOPACKAGE")
-	structNames := flag.Args()
-
-	customZeroValue := flag.String("custom", "", "Custom zero value map. Format: type1=zeroval1,type2=zeroval2")
 	outputFile := flag.String("out", getDefaultOutputFileName(sourceFile), "Custom output file name. Default: [source]_getter.go. Format: *.go")
 	dry := flag.Bool("dry", false, "Dry run. If true, it will print the output to stdout instead of write to file.")
 	flag.Parse()
 
+	structNames := flag.Args()
 	fmt.Println("generate getter for struct", structNames)
 
 	file, err := ast.ParseFile(sourceFile)
@@ -54,15 +52,6 @@ func main() {
 		Source:  sourceFile,
 		Imports: file.GetImports(),
 		Structs: structs,
-	}
-
-	customZeroValueMap := extractMap(*customZeroValue)
-	for i, str := range val.Structs {
-		for j, f := range str.Fields {
-			if c, ok := customZeroValueMap[f.Type]; ok {
-				val.Structs[i].Fields[j].ZeroValue = c
-			}
-		}
 	}
 
 	var buff bytes.Buffer
