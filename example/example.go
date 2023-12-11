@@ -1,4 +1,4 @@
-//go:generate gogetter BasicType Complex
+//go:generate gogetter -out test.go BasicType Complex
 
 package example
 
