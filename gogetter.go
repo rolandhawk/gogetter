@@ -83,7 +83,7 @@ func main() {
 }
 
 func getDefaultOutputFileName(source string) string {
-	filename := strings.TrimRight(source, ".go")
+	filename := strings.TrimSuffix(source, ".go")
 	return fmt.Sprintf("%s_getter.go", filename)
 }
 
